@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LangShake Protocol - Efficient LLM Training Data</title>
+    <meta name="description" content="Join the LangShake protocol to revolutionize LLM training with structured, trustworthy data.">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af', // Blue color
+                        secondary: '#64748b', // Slate color
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-300 shadow-md;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold mb-6 text-gray-800;
+            }
+            
+            .feature-card {
+                @apply bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100;
+            }
+            
+            .nav-link {
+                @apply font-medium hover:text-primary transition-colors duration-300;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navbar -->
+    <header class="fixed w-full bg-white shadow-sm z-10">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary">LangShake</a>
+            
+            <!-- Mobile menu button -->
+            <button id="menu-toggle" class="md:hidden focus:outline-none">
+                <i class="fas fa-bars text-gray-700"></i>
+            </button>
+            
+            <!-- Desktop navigation -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#contribute" class="nav-link">Contribute</a>
+            </div>
+            
+            <!-- Mobile navigation -->
+            <div id="mobile-menu" class="hidden absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden">
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#contribute" class="nav-link">Contribute</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 bg-gradient-to-b from-white to-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    LangShake: Revolutionizing LLM Training Data
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 mb-10">
+                    A Sitemap.xml extension for efficient, trustworthy data collection
+                </p>
+                <a href="#contribute" class="btn-primary inline-block">
+                    Join the Discussion
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="section-title text-center">What is LangShake?</h2>
+                
+                <div class="flex flex-col gap-10">
+                    <div class="w-full">
+                        <p class="text-lg mb-4">
+                            LangShake is an innovative extension to the Sitemap.xml standard, designed to enhance LLM training data collection processes.
+                        </p>
+                        <p class="text-lg mb-4">
+                            By introducing a <code class="bg-gray-100 px-1 rounded">&lt;schema-url&gt;</code> field that points to JSON metadata and implementing checksum verification, LangShake creates a more efficient and trustworthy data ecosystem.
+                        </p>
+                        <p class="text-lg">
+                            The protocol significantly reduces CPU usage by eliminating redundant HTML parsing, improves data quality through structured metadata, and prevents data manipulation via integrity checks.
+                        </p>
+                    </div>
+                    
+                    <div class="w-full">
+                        <pre
+                        class="bg-gray-100 p-4 rounded-lg shadow-lg text-sm overflow-x-auto"
+                        >&lt;url&gt;
+  &lt;loc&gt;https://example.com/article&lt;/loc&gt;
+  &lt;lastmod&gt;2025-04-16T17:58:00Z&lt;/lastmod&gt;
+  &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+  &lt;priority&gt;0.8&lt;/priority&gt;
+  &lt;langshake:schema-url&gt;https://example.com/article.json&lt;/langshake:schema-url&gt;
+  &lt;langshake:checksum&gt;8f7a9b3cf5a...a8b9c07e8f&lt;/langshake:checksum&gt;
+&lt;/url&gt;</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title text-center">Why LangShake?</h2>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Efficiency</h3>
+                    <p class="text-gray-600">
+                        Minimizes HTML parsing with structured JSON metadata, reducing computational overhead and speeding up data collection processes.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Integrity</h3>
+                    <p class="text-gray-600">
+                        Checksum verification ensures trustworthy data by validating content hasn't been modified, creating a more reliable training dataset.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Compatibility</h3>
+                    <p class="text-gray-600">
+                        Builds on established Sitemap.xml and Schema.org standards, making adoption straightforward for websites already using these technologies.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribute Section -->
+    <section id="contribute" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="section-title">Call for Experts</h2>
+                <p class="text-lg mb-8">
+                    We're inviting experts in AI, web standards, and data engineering to provide feedback and contribute to LangShake's development. Your expertise can help shape the future of LLM training data collection.
+                </p>
+                <a class="btn-primary" href="https://github.com/langshake">
+                    Share Your Insights
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                    <div class="text-2xl font-bold mb-4 md:mb-0">LangShake</div>
+                </div>
+                
+                <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                    <p>© 2025 LangShake Protocol. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Contribute button functionality
+        const contributeBtn = document.getElementById('contribute-btn');
+        
+        contributeBtn.addEventListener('click', () => {
+            alert('Thank you for your interest! We\'ll contact you soon.');
+            window.location.href = 'mailto:info@langshake.org';
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // Offset for fixed header
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+        
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('shadow-sm');
+            }
+        });
+    </script>
+</body>
+</html> 
