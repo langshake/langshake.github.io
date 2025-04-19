@@ -86,10 +86,10 @@
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    LangShake: Revolutionizing LLM Training Data
+                    LangShake: The New Standard for AI-Ready Web Content
                 </h1>
                 <p class="text-xl md:text-2xl text-gray-600 mb-10">
-                    A Sitemap.xml extension for efficient, trustworthy data collection
+                    A lightweight, open framework to deliver high-quality structured data to LLMs
                 </p>
 
                 <a href="#contribute" class="btn-primary inline-block">
@@ -112,27 +112,60 @@
                 <div class="flex flex-col gap-10">
                     <div class="w-full">
                         <p class="text-lg mb-4">
-                            LangShake is an innovative extension to the Sitemap.xml standard, designed to enhance LLM training data collection processes.
+                            LangShake is a modern web protocol that makes your site machine-readable, AI-friendly, and verifiable — without changing your frontend.
                         </p>
                         <p class="text-lg mb-4">
-                            By introducing a <code class="bg-gray-100 px-1 rounded">&lt;schema-url&gt;</code> field that points to JSON metadata and implementing checksum verification, LangShake creates a more efficient and trustworthy data ecosystem.
+                            It introduces a three-part system to expose structured content to Large Language Models (LLMs), search agents, and automated crawlers:
                         </p>
-                        <p class="text-lg">
-                            The protocol significantly reduces CPU usage by eliminating redundant HTML parsing, improves data quality through structured metadata, and prevents data manipulation via integrity checks.
+                        
+                        <h3 class="text-xl font-bold mt-6 mb-3">sitemap.xml Extension</h3>
+                        <p class="text-lg mb-4">
+                            LangShake adds new fields to your existing sitemap.xml, allowing you to link to structured content and verify its integrity.
                         </p>
-                    </div>
-                    
-                    <div class="w-full">
-                        <pre
-                        class="bg-gray-100 p-4 rounded-lg shadow-lg text-sm overflow-x-auto"
-                        >&lt;url&gt;
+                        <pre class="bg-gray-100 p-4 rounded-lg shadow-lg text-sm overflow-x-auto mb-6">&lt;url&gt;
   &lt;loc&gt;https://example.com/article&lt;/loc&gt;
   &lt;lastmod&gt;2025-04-16T17:58:00Z&lt;/lastmod&gt;
-  &lt;changefreq&gt;weekly&lt;/changefreq&gt;
-  &lt;priority&gt;0.8&lt;/priority&gt;
-  &lt;langshake:schema-url&gt;https://example.com/article.json&lt;/langshake:schema-url&gt;
+  &lt;langshake:schema-url&gt;https://example.com/langshake/article.json&lt;/langshake:schema-url&gt;
   &lt;langshake:checksum&gt;8f7a9b3cf5a...a8b9c07e8f&lt;/langshake:checksum&gt;
 &lt;/url&gt;</pre>
+
+                        <h3 class="text-xl font-bold mt-6 mb-3">Content JSON Files — Schema.org Data</h3>
+                        <p class="text-lg mb-4">
+                            This is a standalone JSON file following Schema.org standards. It's used by LLMs instead of parsing HTML, and includes a checksum to ensure it hasn't been modified.
+                        </p>
+                        <pre class="bg-gray-100 p-4 rounded-lg shadow-lg text-sm overflow-x-auto mb-6">{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "headline": "LangShake: Revolutionizing LLM Training Data",
+  "description": "A guide to implementing the LangShake protocol...",
+  "articleBody": "...",
+  "author": { "name": "Jane Smith" },
+  "publisher": { "name": "Example Corp" },
+  "checksum": "8f7a9b3cf5a...a8b9c07e8f"
+}</pre>
+
+                        <h3 class="text-xl font-bold mt-6 mb-3">.well-known/llm.json — The Manifest</h3>
+                        <p class="text-lg mb-4">
+                            This file serves as a high-level entry point for AI agents. It describes your site, links to structured content, and optionally includes context and a Merkle root for integrity checks.
+                        </p>
+                        <pre class="bg-gray-100 p-4 rounded-lg shadow-lg text-sm overflow-x-auto">{
+  "version": "1.0",
+  "site": {
+    "name": "Example Corp",
+    "language": "en"
+  },
+  "modules": [
+    "/langshake/article.json"
+  ],
+  "llm_context": {
+    "summary": "We build open-source AI tools.",
+    "principles": ["Transparency", "Ethics"]
+  },
+  "verification": {
+    "strategy": "merkle",
+    "merkleRoot": "abc123..."
+  }
+}</pre>
                     </div>
                 </div>
             </div>
@@ -175,6 +208,39 @@
                     <h3 class="text-xl font-bold mb-3">Compatibility</h3>
                     <p class="text-gray-600">
                         Builds on established Sitemap.xml and Schema.org standards, making adoption straightforward for websites already using these technologies.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Developer-Friendly</h3>
+                    <p class="text-gray-600">
+                        CLI tool abstracts complexity; caching speeds up local builds, making implementation straightforward for development teams.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-comment-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Context-Ready</h3>
+                    <p class="text-gray-600">
+                        Developers can add nuance for LLMs in a dedicated field, enabling more precise and contextually appropriate AI interactions.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card">
+                    <div class="text-primary text-4xl mb-4">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Future-Proof</h3>
+                    <p class="text-gray-600">
+                        Modular, extendable spec allows for Merkle, LLM summaries, and more, ensuring the protocol can adapt to emerging technologies.
                     </p>
                 </div>
             </div>
