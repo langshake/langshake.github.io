@@ -72,47 +72,133 @@ Extends sitemap.xml with the `<langshake:schema-url>` and `<langshake:checksum>`
 </url>
 ```
 
-And in article.json:
+### 2.3 Per-Page JSON-LD Output Format & Checksum (Langshake Standard)
 
+Each per-page JSON-LD file is output in a **universal, verifiable format**:
+
+- The output is always an array, even if there is only one JSON-LD object.
+- The **last element** of the array is always an object `{ "checksum": "..." }`.
+- The checksum is calculated from the array of JSON-LD objects (excluding the checksum object itself).
+- The original JSON-LD objects are not mutated or wrapped.
+
+#### **Single JSON-LD Object Example**
+
+Extracted:
 ```json
-{
-  "@context": "http://schema.org",
-  "@type": "Article",
-  "headline": "LangShake: Revolutionizing LLM Training Data",
-  "description": "A comprehensive guide to implementing the LangShake protocol for efficient AI data collection",
-  "articleBody": "The rise of Large Language Models has created a need for more efficient data collection methods. LangShake addresses this by...",
-  "datePublished": "2025-04-16T17:58:00Z",
-  "dateModified": "2025-04-16T17:58:00Z",
-  "image": "https://example.com/images/langshake-header.jpg",
-  "author": {
-    "@type": "Person",
-    "name": "Jane Smith",
-    "url": "https://example.com/team/jane-smith"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Example Corp",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://example.com/logo.png"
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "LangShake: Revolutionizing LLM Training Data",
+    "description": "A comprehensive guide to implementing the LangShake protocol for efficient AI data collection",
+    "articleBody": "The rise of Large Language Models has created a need for more efficient data collection methods. LangShake addresses this by...",
+    "datePublished": "2025-04-16T17:58:00Z",
+    "dateModified": "2025-04-16T17:58:00Z",
+    "image": "https://example.com/images/langshake-header.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Jane Smith",
+      "url": "https://example.com/team/jane-smith"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Example Corp",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://example.com/logo.png"
+      }
+    },
+    "keywords": ["LLM", "AI", "data collection", "web standards"],
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://example.com/article"
     }
-  },
-  "keywords": ["LLM", "AI", "data collection", "web standards"],
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://example.com/article"
-  },
-  "checksum": "8f7a9b3cf5a...a8b9c07e8f"
-}
+  }
+]
 ```
 
-This JSON is generated from the embedded schema in the source HTML. During validation, the hash is calculated by extracting the HTML schema excluding the checksum field, to avoid circular references.
+Output:
+```json
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "LangShake: Revolutionizing LLM Training Data",
+    "description": "A comprehensive guide to implementing the LangShake protocol for efficient AI data collection",
+    "articleBody": "The rise of Large Language Models has created a need for more efficient data collection methods. LangShake addresses this by...",
+    "datePublished": "2025-04-16T17:58:00Z",
+    "dateModified": "2025-04-16T17:58:00Z",
+    "image": "https://example.com/images/langshake-header.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Jane Smith",
+      "url": "https://example.com/team/jane-smith"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Example Corp",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://example.com/logo.png"
+      }
+    },
+    "keywords": ["LLM", "AI", "data collection", "web standards"],
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://example.com/article"
+    }
+  },
+  {
+    "checksum": "8f7a9b3cf5a...a8b9c07e8f"
+  }
+]
+```
+
+#### **Multiple JSON-LD Objects Example**
+
+Extracted:
+```json
+[
+  { "@type": "WebPage", "name": "A" },
+  { "@type": "WebPage", "name": "B" }
+]
+```
+
+Output:
+```json
+[
+  { "@type": "WebPage", "name": "A" },
+  { "@type": "WebPage", "name": "B" },
+  { "checksum": "..." }
+]
+```
+
+#### **How to Verify the Checksum**
+1. Read the file as an array.
+2. Remove the last element (the checksum object).
+3. Calculate the checksum on the remaining array.
+4. Compare to the value in the removed checksum object.
+
+This format is universal, easy to verify, and works for both single and multiple JSON-LD objects.
+
+### 2.4 Extended Sitemap Protocol Example (unchanged)
+
+```xml
+<url>
+  <loc>https://example.com/article</loc>
+  <lastmod>2025-04-16T17:58:00Z</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <langshake:schema-url>https://example.com/langshake/article.json</langshake:schema-url>
+  <langshake:checksum>8f7a9b3cf5a...a8b9c07e8f</langshake:checksum>
+</url>
+```
 
 ## 3. Verification Strategy 
 
 To prevent abuse (fake prices, fake reviews), both systems support validation:
 
-- **Per-JSON Hashing**: Each JSON file includes `checksum` generated from the embedded schema block in the HTML. During validation, this field must be excluded from the hash calculation.
+- **Per-JSON Hashing**: Each JSON file includes a checksum object as the last element of the array. During validation, this object must be removed before recalculating the hash.
 
 - **Merkle Root Aggregation**: The CLI aggregates all per-page hashes into a Merkle tree, and includes the root in .llm.json. This enables fast multi-file verification.
 
@@ -129,13 +215,13 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
 2. Run `langshake build`:
    - Extracts and caches schema data
    - Generates JSON files in the `/langshake/` directory
-   - Computes `checksum` per file (excluding that field)
+   - Computes a checksum for each file (excluding the checksum object)
    - Builds Merkle tree
    - Outputs `.llm.json` with root and optional context
 
 3. Validate with `langshake validate`:
    - Re-extracts schema from source HTML
-   - Recalculates hash and compares with published `checksum`
+   - Recalculates hash and compares with published checksum
    - Skips cache during strict validation
 
 4. LLM/AI discovery is handled solely via the standard `.well-known/llm.json` file at the root of your domain.
