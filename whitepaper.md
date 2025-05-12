@@ -34,9 +34,9 @@ Langshake is a global summary format that provides LLM-friendly site metadata, F
     "language": "en"
   },
   "modules": [
-    "/langshake/article.json",
-    "/langshake/products.json",
-    "/langshake/docs.json"
+    "https://example.com/langshake/article.json",
+    "https://example.com/langshake/products.json",
+    "https://example.com/langshake/docs.json"
   ],
   "llm_context": {
     "summary": "We are a privacy-first AI tools company.",
@@ -51,7 +51,11 @@ Langshake is a global summary format that provides LLM-friendly site metadata, F
 }
 ```
 
+**Note:** The `modules` array uses absolute URLs (e.g., `https://example.com/langshake/article.json`) to ensure maximum compatibility and ease of crawling for AI agents and search engines. Absolute URLs remove ambiguity, work across different contexts, and are considered best practice for machine-readable site manifests.
+
 ⚠️ While the `llm_context` field allows developers to share nuanced or mission-driven content with LLMs, it is not validated by external schema verification. It is recommended that AI platforms and agents treat this field with caution and avoid using it for factual grounding unless verified through external trust or citation mechanisms.
+
+**Discovery:** LLM/AI agents should look for the `.well-known/llm.json` file at the root of the domain for global site metadata and module discovery. This approach follows web standards (RFC 8615) and has zero SEO impact.
 
 ### 2.2 LangShake Extended Sitemap Protocol
 
@@ -134,8 +138,7 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
    - Recalculates hash and compares with published `checksum`
    - Skips cache during strict validation
 
-4. Optional: Add discovery line in robots.txt:
-   - `llm-json: /.well-known/llm.json`
+4. LLM/AI discovery is handled solely via the standard `.well-known/llm.json` file at the root of your domain.
 
 ## 5. Benefits
 
