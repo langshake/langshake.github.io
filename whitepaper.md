@@ -212,18 +212,18 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
 
 1. Author schema data in your source code or CMS.
 
-2. Run `langshakeit`:
+2. Run [`langshakeit`](https://github.com/langshake/langshake-it):
    - Scans built HTML output (e.g., from Next.js, Astro)
    - Extracts and caches all JSON-LD schema data
    - Generates per-page JSON-LD files in `/langshake/`, each ending with a verifiable checksum
    - Computes a Merkle root from all per-page checksums
    - Outputs the global `.well-known/llm.json` index with module links, Merkle root, and optional `llm_context`
-   - Auto-detects your site’s public base URL for accurate module referencing
+   - Auto-detects your site's public base URL for accurate module referencing
    - Uses smart caching to only update changed files
 
 3. Optionally, provide an `llm_context.json` file to describe your site's principles and intended LLM usage. This content is embedded into `.llm.json`, but is not subject to checksum validation.
 
-4. Run `shakeproof`:
+4. Run [`shakeproof`](https://github.com/langshake/shake-proof):
    - Re-extracts Schema.org data from rendered HTML
    - Recalculates checksums and compares with your published JSON files
    - Verifies Merkle root integrity
@@ -251,8 +251,8 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
 - Generate the LangShake Extended Sitemap Protocol
 - Submit the Extended Sitemap Protocol proposal to the W3C
 - Improve the Open-source:
-  - **LangshakeIt CLI** (for extraction and publishing)
-  - **Shakeproof CLI** (for validation and benchmarking)
+  - **[LangshakeIt CLI](https://github.com/langshake/langshake-it)** (for extraction and publishing)
+  - **[Shakeproof CLI](https://github.com/langshake/shake-proof)** (for validation and benchmarking)
 - Attract more webmasters and contributors to the project
 - Partner with:
   - AI/LLM platforms for `.llm.json` adoption and verification support
