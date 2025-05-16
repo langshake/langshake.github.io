@@ -210,21 +210,27 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
 
 ## 4. Developer Workflow
 
-1. Author schema data in source code or CMS.
+1. Author schema data in your source code or CMS.
 
-2. Run `langshake build`:
-   - Extracts and caches schema data
-   - Generates JSON files in the `/langshake/` directory
-   - Computes a checksum for each file (excluding the checksum object)
-   - Builds Merkle tree
-   - Outputs `.llm.json` with root and optional context
+2. Run `langshakeit`:
+   - Scans built HTML output (e.g., from Next.js, Astro)
+   - Extracts and caches all JSON-LD schema data
+   - Generates per-page JSON-LD files in `/langshake/`, each ending with a verifiable checksum
+   - Computes a Merkle root from all per-page checksums
+   - Outputs the global `.well-known/llm.json` index with module links, Merkle root, and optional `llm_context`
+   - Auto-detects your site’s public base URL for accurate module referencing
+   - Uses smart caching to only update changed files
 
-3. Validate with `langshake validate`:
-   - Re-extracts schema from source HTML
-   - Recalculates hash and compares with published checksum
-   - Skips cache during strict validation
+3. Optionally, provide an `llm_context.json` file to describe your site's principles and intended LLM usage. This content is embedded into `.llm.json`, but is not subject to checksum validation.
 
-4. LLM/AI discovery is handled solely via the standard `.well-known/llm.json` file at the root of your domain.
+4. Run `shakeproof`:
+   - Re-extracts Schema.org data from rendered HTML
+   - Recalculates checksums and compares with your published JSON files
+   - Verifies Merkle root integrity
+   - Benchmarks extraction speed, schema match accuracy, and system resource usage
+   - Outputs both JSON results and a human-readable Markdown summary
+
+5. LLM/AI discovery is handled solely via the `.well-known/llm.json` file located at the root of your domain, in compliance with [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615).
 
 ## 5. Benefits
 
@@ -242,10 +248,15 @@ To prevent abuse (fake prices, fake reviews), both systems support validation:
 
 ## 6. Next Steps
 
-- Finalize Langshake Spec + Merkle SDK
-- Submit Sitemap extension draft to W3C
-- Open-source langshake-cli, langshake-validate
-- Partner with AI platforms and SEO tools
+- Generate the LangShake Extended Sitemap Protocol
+- Submit the Extended Sitemap Protocol proposal to the W3C
+- Improve the Open-source:
+  - **LangshakeIt CLI** (for extraction and publishing)
+  - **Shakeproof CLI** (for validation and benchmarking)
+- Attract more webmasters and contributors to the project
+- Partner with:
+  - AI/LLM platforms for `.llm.json` adoption and verification support
+  - SEO and structured data platforms to recognize Langshake as a trust signal
 
 ## Conclusion
 
